@@ -37,11 +37,9 @@ int main(int argc, char **argv)
             cvtColor(frame, gray, COLOR_BGR2GRAY);
 
             threshold(gray, thresh, 100, 255, THRESH_BINARY);
-            imshow(window_name, thresh);
 
             msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", thresh).toImageMsg();
             pub.publish(msg);
-            cv::waitKey(1);
         }
         ros::spinOnce();
         loop_rate.sleep();
