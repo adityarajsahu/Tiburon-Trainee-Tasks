@@ -10,8 +10,15 @@ project(find_angle)
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   roscpp
+  rospy
   std_msgs
+  genmsg
+  message_generation
+  image_transport
+  sensor_msgs
 )
+
+find_package(OpenCV 3.2 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -204,3 +211,15 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+add_executable(threshold src/threshold.cpp)
+target_link_libraries(threshold ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(threshold find_angle_generate_messages_cpp)
+
+add_executable(edge_detection src/edge_detection.cpp)
+target_link_libraries(edge_detection ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(edge_detection find_angle_generate_messages_cpp)
+
+add_executable(houghlines src/houghlines.cpp)
+target_link_libraries(houghlines ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_dependencies(houghlines find_angle_generate_messages_cpp)
