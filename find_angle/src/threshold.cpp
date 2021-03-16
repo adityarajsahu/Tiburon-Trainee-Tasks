@@ -24,11 +24,11 @@ int main(int argc, char **argv)
         return -1;
     } 
 
-    Mat frame;
+    Mat frame, thresh;
     sensor_msgs::ImagePtr msg;
 
     ros::Rate loop_rate(30);
-    while(nh.ok())
+    while(n.ok())
     {
         cap >> frame;
         if(!frame.empty())
@@ -36,10 +36,10 @@ int main(int argc, char **argv)
             Mat gray;
             cvtColor(frame, gray, COLOR_BGR2GRAY);
 
-            threshold(gray, threshold, 100, 255, 0);
-            imshow(window_name, threshold);
+            threshold(gray, thresh, 100, 255, THRESH_BINARY);
+            imshow(window_name, thresh);
 
-            msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", threshold).toImageMSg();
+            msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", thresh).toImageMsg();
             pub.publish(msg);
             cv::waitKey(1);
         }
